@@ -2,7 +2,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { StockData } from "../types/stock";
 
 export async function fetchStockData(symbol: string): Promise<StockData> {
-  const model = "gemini-3.1-flash-lite-preview";
+  const model = "gemini-flash-latest";
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey || apiKey === "undefined" || apiKey === "") {
@@ -30,7 +30,6 @@ export async function fetchStockData(symbol: string): Promise<StockData> {
       "sentiment": {"score": number, "label": string, "analysis": string}
     }`,
     config: {
-      tools: [{ googleSearch: {} }],
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,

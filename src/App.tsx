@@ -71,10 +71,10 @@ export default function App() {
 
   useEffect(() => {
     // Only fetch on mount if we don't have data
-    if (!data) {
+    if (!data && !isLoading) {
       handleFetch(symbol);
     }
-  }, [handleFetch, symbol, data]);
+  }, []); // Only run once on mount
 
   useEffect(() => {
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
