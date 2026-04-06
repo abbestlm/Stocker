@@ -27,9 +27,14 @@ export default function App() {
       const result = await fetchStockData(targetSymbol);
       setData(result);
       setSymbol(targetSymbol);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError(`Failed to load data for ${targetSymbol}. Please check the symbol and try again.`);
+      const errorMessage = err?.message || "";
+      if (errorMessage.includes("429") || errorMessage.toLowerCase().includes("quota")) {
+        setError("API Limit Reached: You've hit the Gemini free tier quota. Please wait a minute or check your Google AI Studio billing settings.");
+      } else {
+        setError(`Failed to load data for ${targetSymbol}. Please check the symbol and try again.`);
+      }
     } finally {
       setIsLoading(false);
     }
