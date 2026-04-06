@@ -1,7 +1,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { StockData } from "../types/stock";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+const apiKey = process.env.GEMINI_API_KEY;
+const ai = new GoogleGenAI({ apiKey: apiKey! });
 
 export async function fetchStockData(symbol: string): Promise<StockData> {
   const model = "gemini-3-flash-preview";
