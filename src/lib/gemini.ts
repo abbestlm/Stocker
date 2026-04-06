@@ -6,7 +6,7 @@ export async function fetchStockData(symbol: string): Promise<StockData> {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey || apiKey === "undefined" || apiKey === "") {
-    throw new Error("MISSING_API_KEY: Your Gemini API key is missing. Please check your GitHub Secrets configuration.");
+    throw new Error("MISSING_API_KEY: API key is missing. Please check your configuration.");
   }
 
   const ai = new GoogleGenAI({ apiKey });

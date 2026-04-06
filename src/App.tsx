@@ -56,11 +56,11 @@ export default function App() {
       const errorMessage = err?.message || "";
       
       if (errorMessage.includes("429") || errorMessage.toLowerCase().includes("quota")) {
-        setError("API Limit Reached: You've hit the Gemini free tier quota. Please wait a minute.");
+        setError("API Limit Reached: Too many requests. Please wait a minute.");
       } else if (errorMessage.includes("400") || errorMessage.includes("API_KEY_INVALID") || errorMessage.includes("expired")) {
-        setError("API Key Error: Your Gemini API key is invalid or expired. Please check your GitHub Secrets (GEMINI_API_KEY).");
+        setError("API Key Error: The API key is invalid or expired. Please check your configuration.");
       } else if (errorMessage.includes("MISSING_API_KEY")) {
-        setError("Configuration Error: No API Key found. Make sure you added GEMINI_API_KEY to your GitHub Repository Secrets.");
+        setError("Configuration Error: No API Key found. Make sure you added the key to your secrets.");
       } else {
         setError(`Failed to load data for ${targetSymbol}. Please check the symbol and try again.`);
       }
@@ -263,7 +263,7 @@ export default function App() {
       <footer className="max-w-7xl mx-auto px-6 py-12 border-t border-gray-900 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-2 opacity-50">
           <Activity size={16} />
-          <span className="text-[10px] font-mono uppercase tracking-widest">Powered by Gemini AI & Real-time Market Data</span>
+          <span className="text-[10px] font-mono uppercase tracking-widest">Powered by Real-time Market Data</span>
         </div>
         <div className="flex items-center gap-8 text-[10px] font-mono text-gray-600 uppercase tracking-widest">
           <a href="#" className="hover:text-gray-400 transition-colors">Privacy</a>
