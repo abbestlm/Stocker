@@ -42,7 +42,7 @@ export function SearchHeader({
             <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
               <Activity className="text-white" size={24} />
             </div>
-            <h1 className="text-xl font-bold tracking-tighter text-white uppercase">My Stocker</h1>
+            <h1 className="text-xl font-bold tracking-tighter text-white uppercase">STOCK FETCHER</h1>
           </div>
 
           {currentSymbol && (
