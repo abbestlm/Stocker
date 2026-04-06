@@ -20,11 +20,35 @@ export default function App() {
     return saved ? JSON.parse(saved) : ["AAPL", "TSLA", "MSFT", "GOOGL"];
   });
 
-  const handleFetch = useCallback(async (targetSymbol: string) => {
+  const handleFetch = useCallback(async (targetSymbol: string, force = false) => {
+    if (isLoading) return;
+    
+    // 1. Check Cache First (Fix for 429)
+    const cacheKey = `stock_cache_${targetSymbol}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData && !force) {
+      const { data: savedData, timestamp } = JSON.parse(cachedData);
+      const age = Date.now() - timestamp;
+      if (age < 5 * 60 * 1000) { // 5 minutes cache
+        console.log(`Loading ${targetSymbol} from cache to prevent 429...`);
+        setData(savedData);
+        setSymbol(targetSymbol);
+        setError(null);
+        return;
+      }
+    }
+
     setIsLoading(true);
     setError(null);
     try {
       const result = await fetchStockData(targetSymbol);
+      
+      // 2. Save to Cache
+      localStorage.setItem(cacheKey, JSON.stringify({
+        data: result,
+        timestamp: Date.now()
+      }));
+
       setData(result);
       setSymbol(targetSymbol);
     } catch (err: any) {
@@ -46,8 +70,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    handleFetch(symbol);
-  }, []);
+    // Only fetch on mount if we don't have data
+    if (!data) {
+      handleFetch(symbol);
+    }
+  }, [handleFetch, symbol, data]);
 
   useEffect(() => {
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
