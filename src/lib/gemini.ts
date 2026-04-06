@@ -1,12 +1,16 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { StockData } from "../types/stock";
 
-const apiKey = process.env.GEMINI_API_KEY;
-const ai = new GoogleGenAI({ apiKey: apiKey! });
-
 export async function fetchStockData(symbol: string, retryCount = 0): Promise<StockData> {
-  const model = "gemini-flash-latest";
-  
+  const model = "gemini-3-flash-preview";
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey || apiKey === "undefined" || apiKey === "") {
+    throw new Error("MISSING_API_KEY: Your Gemini API key is missing. Please check your GitHub Secrets configuration.");
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+
   try {
     const response = await ai.models.generateContent({
       model,

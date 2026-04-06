@@ -30,8 +30,13 @@ export default function App() {
     } catch (err: any) {
       console.error(err);
       const errorMessage = err?.message || "";
+      
       if (errorMessage.includes("429") || errorMessage.toLowerCase().includes("quota")) {
-        setError("API Limit Reached: You've hit the Gemini free tier quota. Please wait a minute or check your Google AI Studio billing settings.");
+        setError("API Limit Reached: You've hit the Gemini free tier quota. Please wait a minute.");
+      } else if (errorMessage.includes("400") || errorMessage.includes("API_KEY_INVALID") || errorMessage.includes("expired")) {
+        setError("API Key Error: Your Gemini API key is invalid or expired. Please check your GitHub Secrets (GEMINI_API_KEY).");
+      } else if (errorMessage.includes("MISSING_API_KEY")) {
+        setError("Configuration Error: No API Key found. Make sure you added GEMINI_API_KEY to your GitHub Repository Secrets.");
       } else {
         setError(`Failed to load data for ${targetSymbol}. Please check the symbol and try again.`);
       }
